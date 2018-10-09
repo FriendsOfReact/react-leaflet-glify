@@ -1,7 +1,15 @@
-var fs = require('fs');
 var Points = require('./points');
 var Shapes = require('./shapes');
 var mapMatrix = require('./map-matrix');
+
+var defaultGlsl = require('../shader/vertex/default.glsl');
+var dotGlsl = require('../shader/fragment/dot.glsl');
+var pointGlsl = require('../shader/fragment/point.glsl');
+var polygonGlsl = require('../shader/fragment/polygon.glsl');
+var puckGlsl = require('../shader/fragment/puck.glsl');
+var simpleCircleGlsl = require('../shader/fragment/simple-circle.glsl');
+var squareGlsl = require('../shader/fragment/square.glsl');
+
 var glify = {
   longitudeKey: 1,
   latitudeKey: 0,
@@ -121,9 +129,17 @@ var glify = {
     var self = this;
     if (points.length < 1) return null;
     return points.reduce(function (prev, curr) {
-      var prevDistance = self.locationDistance(targetLocation, prev, map),
-          currDistance = self.locationDistance(targetLocation, curr, map);
-      return (prevDistance < currDistance) ? prev : curr;
+      var mPrev = prev;
+      mPrev['lat'] = prev[glify.latitudeKey];
+      mPrev['lng'] = prev[glify.longitudeKey];
+
+      var mCurr = curr;
+      mCurr['lat'] = curr[glify.latitudeKey];
+      mCurr['lng'] = curr[glify.longitudeKey];
+
+      var prevDistance = self.locationDistance(targetLocation, mPrev, map),
+          currDistance = self.locationDistance(targetLocation, mCurr, map);
+      return (prevDistance < currDistance) ? mPrev : mCurr;
     });
   },
   vectorDistance: function (dx, dy) {
@@ -190,14 +206,14 @@ var glify = {
   },
   mapMatrix: mapMatrix,
   shader: {
-    vertex: fs.readFileSync(__dirname + '/../shader/vertex/default.glsl'),
+    vertex: defaultGlsl,
     fragment: {
-      dot: fs.readFileSync(__dirname + '/../shader/fragment/dot.glsl'),
-      point: fs.readFileSync(__dirname + '/../shader/fragment/point.glsl'),
-      puck: fs.readFileSync(__dirname + '/../shader/fragment/puck.glsl'),
-      simpleCircle: fs.readFileSync(__dirname + '/../shader/fragment/simple-circle.glsl'),
-      square: fs.readFileSync(__dirname + '/../shader/fragment/square.glsl'),
-      polygon: fs.readFileSync(__dirname + '/../shader/fragment/polygon.glsl')
+      dot: dotGlsl,
+      point: pointGlsl,
+      puck: puckGlsl,
+      simpleCircle: simpleCircleGlsl,
+      square: squareGlsl,
+      polygon: polygonGlsl
     }
   }
 };
