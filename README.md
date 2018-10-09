@@ -1,4 +1,6 @@
-# Leaflet.glify
+# Leaflet.glify for React
+React compatible package for Leaflet.glify extension
+- - -  
 web gl renderer plugin for leaflet
 
 _Pronounced leaflet-G.L.-Ify, or leaflet-glify, or L.-G.L.-Ify, or L-glify, or elglify_
