@@ -5,6 +5,9 @@ _Pronounced leaflet-G.L.-Ify, or leaflet-glify, or L.-G.L.-Ify, or L-glify, or e
 
 inspired by http://bl.ocks.org/Sumbera/c6fed35c377a46ff74c3 & need.
 
+## Example Usage on React
+TODO
+
 ## Objective
 * To provide a means of rendering a massive amount of data visually in a way that does not degrade user experience
 * Remaining as simple as possible with current fastest libs
